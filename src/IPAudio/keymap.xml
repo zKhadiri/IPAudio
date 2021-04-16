@@ -1,5 +1,5 @@
 <keymap>
 	<map context="GlobalActions">
-		<key id="KEY_AUDIO" mapto="audioSelection" flags="l" />
+		<key id="KEY_AUDIO" mapto="IPAudioSelection" flags="l" />
 	</map>
 </keymap>
