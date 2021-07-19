@@ -19,7 +19,8 @@ from Tools.Directories import fileExists
 from ServiceReference import ServiceReference
 from enigma import iPlayableService 
 from Plugins.Extensions.IPAudio.Console2 import Console2
-import os ,sys
+import os
+import sys
 
 config.plugins.IPAudio = ConfigSubsection()
 config.plugins.IPAudio.currentService = ConfigText()
