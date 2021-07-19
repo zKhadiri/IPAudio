@@ -35,8 +35,10 @@ config.plugins.IPAudio.running = ConfigText()
 REDC = '\033[31m'
 ENDC = '\033[m'
 
+
 def cprint(text):                                                               
     print(REDC + text + ENDC)
+
 
 def trace_error():
     import sys
@@ -59,6 +61,7 @@ def getPlaylist():
     else:
         return None
     
+
 def getversioninfo():
     import os
     currversion = '1.0'
@@ -73,17 +76,21 @@ def getversioninfo():
             pass
     return (currversion)
 
+
 Ver = getversioninfo()
+
 
 def get_Lecteur():
     Leteur = config.plugins.IPAudio.sync.value
     return Leteur
+
 
 def is_compatible():
     if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008', 'sf8008m', 'viper4kv20', 'beyonwizv2', 'ustym4kpro', 'gbtrio4k',):
         return True
     else:
         return False
+
 
 class IPAudioSetup(Screen, ConfigListScreen):
     
@@ -132,6 +139,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
     def changedEntry(self):
         for x in self.onChangedEntry:
             x()
+
 
 class IPAudioScreen(Screen):
 
@@ -322,6 +330,7 @@ class IPAudioScreen(Screen):
             self.Audiocontainer.kill()
         self.close()
         
+
 class IPAudio(Screen):
     
     def __init__(self, session):
@@ -363,18 +372,22 @@ class IPAudio(Screen):
     def ShowHide(self):
         self.session.open(IPAudioScreen)
         
+
 def sessionstart(reason, session=None, **kwargs):
     if reason == 0:
         IPAudio(session).gotSession()
         
+
 def main(session, **kwargs):
     session.open(IPAudioScreen)
+
 
 def showInmenu(menuid, **kwargs):
     if menuid == "mainmenu":
         return [("IPAudio", main, "IPAudio", 1)]
     else:
         return []
+
 
 def Plugins(**kwargs):
     Descriptors = []
