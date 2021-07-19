@@ -24,7 +24,7 @@ import sys
 
 config.plugins.IPAudio = ConfigSubsection()
 config.plugins.IPAudio.currentService = ConfigText()
-config.plugins.IPAudio.sync = ConfigSelection(default="alsasink", choices = [
+config.plugins.IPAudio.sync = ConfigSelection(default="alsasink", choices=[
                 ("alsasink", _("alsasink")),
                 ("osssink", _("osssink")),
             ])
