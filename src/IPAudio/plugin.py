@@ -32,11 +32,11 @@ config.plugins.IPAudio.update = ConfigYesNo(default=True)
 config.plugins.IPAudio.mainmenu = ConfigYesNo(default=False)
 config.plugins.IPAudio.running = ConfigText()
 
-REDC =  '\033[31m'
+REDC = '\033[31m'
 ENDC = '\033[m'
 
 def cprint(text):                                                               
-    print(REDC+text+ENDC)
+    print(REDC + text + ENDC)
 
 def trace_error():
     import sys
@@ -135,7 +135,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
 
 class IPAudioScreen(Screen):
 
-    skin="""<screen name="IPAudio" position="center,center" size="762,562" title="IPAudio By ZIKO V {}" backgroundColor="#16000000" flags="wfNoBorder" zPosition="4">
+    skin = """<screen name="IPAudio" position="center,center" size="762,562" title="IPAudio By ZIKO V {}" backgroundColor="#16000000" flags="wfNoBorder" zPosition="4">
                 <widget source="Title" position="8,10" size="743,35" render="Label" font="Regular;26" foregroundColor="#00ffa500" backgroundColor="#16000000" transparent="1" />
                 <widget font="Regular;35" foregroundColor="#00ffffff" backgroundColor="#16000000" halign="center" position="615,5" render="Label" size="143,52" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
                 <convert type="ClockToText">Default</convert>
@@ -155,7 +155,7 @@ class IPAudioScreen(Screen):
         self.plIndex = 0
         self['status'] = Label()
         self['Lecteur'] = Label()
-        self['Lecteur'].setText('Audio sink : '+get_Lecteur())
+        self['Lecteur'].setText('Audio sink : ' + get_Lecteur())
         self["config"] = MenuList([])
         self["key_green"] = Button(_("Reset Audio"))
         self["myActionMap"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
@@ -185,14 +185,14 @@ class IPAudioScreen(Screen):
     def getData(self, data):
         data = data.encode("utf-8")
         if data:
-            lines=data.split("\n")
+            lines = data.split("\n")
             for line in lines:
                 if line.startswith("version"):
                    self.new_version = line.split("=")[1]
                 if line.startswith("description"):
                    self.new_description = line.split("=")[1]
                    break
-        if float(Ver) == float(self.new_version) or float(Ver)>float(self.new_version):
+        if float(Ver) == float(self.new_version) or float(Ver) > float(self.new_version):
             pass
         else:
             new_version = self.new_version
@@ -209,20 +209,20 @@ class IPAudioScreen(Screen):
         return
 
     def right(self):
-        self['Lecteur'].setText('Audio sink : '+get_Lecteur())
-        self.plIndex +=1
+        self['Lecteur'].setText('Audio sink : ' + get_Lecteur())
+        self.plIndex += 1
         self.changePlaylist()
         
     def left(self):
-        self['Lecteur'].setText('Audio sink : '+get_Lecteur())
-        self.plIndex -=1
+        self['Lecteur'].setText('Audio sink : ' + get_Lecteur())
+        self.plIndex -= 1
         self.changePlaylist()
         
     def changePlaylist(self):
-        if self.plIndex > (len(self.choices)-1):
+        if self.plIndex > (len(self.choices) - 1):
            self.plIndex = 0
         if self.plIndex < 0:
-           self.plIndex = len(self.choices)-1
+           self.plIndex = len(self.choices) - 1
         self.setPlaylist()
         
     def setPlaylist(self):
