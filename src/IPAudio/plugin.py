@@ -10,7 +10,7 @@ from Components.MenuList import MenuList
 from GlobalActions import globalActionMap
 from keymapparser import readKeymap
 from Components.Sources.StaticText import StaticText
-from Components.config import config, ConfigInteger, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection,ConfigText,configfile, ConfigDirectory
+from Components.config import config, ConfigInteger, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText, configfile, ConfigDirectory
 from Components.ConfigList import ConfigList, ConfigListScreen
 from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_PLUGINS
 from enigma import eConsoleAppContainer, getDesktop, eTimer, eListboxPythonMultiContent, gFont
@@ -80,7 +80,7 @@ def get_Lecteur():
     return Leteur
 
 def is_compatible():
-    if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008','sf8008m','viper4kv20','beyonwizv2','ustym4kpro','gbtrio4k',):
+    if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008', 'sf8008m', 'viper4kv20', 'beyonwizv2', 'ustym4kpro', 'gbtrio4k',):
         return True
     else:
         return False
@@ -105,9 +105,9 @@ class IPAudioSetup(Screen, ConfigListScreen):
         ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
         self["actions"] = ActionMap(["SetupActions"],
             {
-                "cancel":self.keyCancel,
-                "save":self.apply,
-                "ok":self.apply,
+                "cancel": self.keyCancel,
+                "save": self.apply,
+                "ok": self.apply,
             }, -2)
         self["green_key"] = StaticText(_("Save"))
         self["red_key"] = StaticText(_("Cancel"))
@@ -158,14 +158,14 @@ class IPAudioScreen(Screen):
         self['Lecteur'].setText('Audio sink : ' + get_Lecteur())
         self["config"] = MenuList([])
         self["key_green"] = Button(_("Reset Audio"))
-        self["myActionMap"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
+        self["myActionMap"] = ActionMap(["OkCancelActions", "ColorActions", "WizardActions", "MenuActions"],
         {
             "ok": self.ok,
             "cancel": self.exit,
             "green": self.resetAudio,
-            "right":self.right,
-            "left":self.left,
-            "menu":self.Config_lctr,
+            "right": self.right,
+            "left": self.left,
+            "menu": self.Config_lctr,
         }, -1)
         self.container = eConsoleAppContainer()
         self.Audiocontainer = eConsoleAppContainer()
@@ -199,13 +199,13 @@ class IPAudioScreen(Screen):
             new_description = self.new_description
             self.session.openWithCallback(self.installupdate, MessageBox, _('New version %s is available.\n\n%s.\n\nDo you want to install it now.' % (self.new_version, self.new_description)), MessageBox.TYPE_YESNO)
 
-    def installupdate(self,answer=False):
+    def installupdate(self, answer=False):
         if answer:
             cmdlist = []
             cmdlist.append('wget -q "--no-check-certificate" http://linuxsat5.webhop.info/ipaudio/installer.sh -O - | /bin/sh')
             self.session.open(Console2, title='Update IPAudio', cmdlist=cmdlist, finishedCallback=self.myCallback, closeOnSuccess=False)
 
-    def myCallback(self,result=None):
+    def myCallback(self, result=None):
         return
 
     def right(self):
@@ -250,7 +250,7 @@ class IPAudioScreen(Screen):
                 cmd = 'ipplayer-os "{}"'.format(self.url)
             self.runCmdAndSaveProcessIdToFile(cmd, '/tmp/.ipaudio.pid', 'w')
         else:
-            self.session.open(MessageBox, _("Cannot play url, ipplayer is missing !!"), MessageBox.TYPE_ERROR,timeout=5)
+            self.session.open(MessageBox, _("Cannot play url, ipplayer is missing !!"), MessageBox.TYPE_ERROR, timeout=5)
         
     def audio_start(self):
         if fileExists('/dev/dvb/adapter0/audio10'):
@@ -324,7 +324,7 @@ class IPAudioScreen(Screen):
         
 class IPAudio(Screen):
     
-    def __init__(self,session):
+    def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
         self.IPAudiocontainer = eConsoleAppContainer()
@@ -381,5 +381,5 @@ def Plugins(**kwargs):
     Descriptors.append(PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart))
     if config.plugins.IPAudio.mainmenu.value:
         Descriptors.append(PluginDescriptor(where=[PluginDescriptor.WHERE_MENU], fnc=showInmenu))
-    Descriptors.append(PluginDescriptor(name="IPAudio {}".format(Ver), description="Listen to your favorite commentators",icon="logo.png",where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
+    Descriptors.append(PluginDescriptor(name="IPAudio {}".format(Ver), description="Listen to your favorite commentators", icon="logo.png", where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
     return Descriptors
