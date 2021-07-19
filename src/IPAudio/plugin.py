@@ -10,10 +10,10 @@ from Components.MenuList import MenuList
 from GlobalActions import globalActionMap
 from keymapparser import readKeymap
 from Components.Sources.StaticText import StaticText
-from Components.config import config, ConfigInteger, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection ,ConfigText ,configfile , ConfigDirectory
+from Components.config import config, ConfigInteger, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection,ConfigText,configfile, ConfigDirectory
 from Components.ConfigList import ConfigList, ConfigListScreen
 from Tools.Directories import resolveFilename, SCOPE_LANGUAGE, SCOPE_PLUGINS
-from enigma import eConsoleAppContainer , getDesktop , eTimer , eListboxPythonMultiContent , gFont
+from enigma import eConsoleAppContainer, getDesktop, eTimer, eListboxPythonMultiContent, gFont
 from Components.ServiceEventTracker import ServiceEventTracker
 from Tools.Directories import fileExists
 from ServiceReference import ServiceReference
@@ -194,7 +194,7 @@ class IPAudioScreen(Screen):
                    break
         if float(Ver) == float(self.new_version) or float(Ver)>float(self.new_version):
             pass
-        else :
+        else:
             new_version = self.new_version
             new_description = self.new_description
             self.session.openWithCallback(self.installupdate, MessageBox, _('New version %s is available.\n\n%s.\n\nDo you want to install it now.' % (self.new_version, self.new_description)), MessageBox.TYPE_YESNO)
