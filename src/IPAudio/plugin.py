@@ -22,6 +22,11 @@ from Components.MultiContent import MultiContentEntryText
 from Tools.Directories import fileExists
 from ServiceReference import ServiceReference
 from enigma import iPlayableService 
+try:
+	from enigma import eAlsaOutput
+	HAVE_EALSA = True
+except ImportError:
+	HAVE_EALSA = False
 from Plugins.Extensions.IPAudio.Console2 import Console2
 import os, time ,sys
 from Components.Sources.List import List
@@ -93,7 +98,7 @@ def get_Lecteur():
 	return Leteur
 
 def is_compatible():
-	if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008','sf8008m','viper4kv20','beyonwizv2','ustym4kpro','gbtrio4k',):
+	if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008','sf8008m','viper4kv20','beyonwizv2','ustym4kpro','gbtrio4k','spider-x',):
 		return True
 	else:
 		return False
@@ -161,7 +166,7 @@ class IPAudioScreen(Screen):
 			self.skin = SKIN_IPAudioScreen_ICONE
 		elif config.plugins.IPAudio.skin.value == 'light':
 			self.skin = SKIN_IPAudioScreen_Light
-		self.choices = ['server1','world','mixlr','playlist']
+		self.choices = ['server1','c+fr','world','mixlr','playlist']
 		self.plIndex = 0
 		self['server'] = Label()
 		self['sync'] = Label()
@@ -183,6 +188,9 @@ class IPAudioScreen(Screen):
 			"left":self.left,
 			"menu":self.Config_lctr,
 		}, -1)
+		self.alsa = None
+		if HAVE_EALSA:
+			self.alsa = eAlsaOutput.getInstance()       
 		self.container = eConsoleAppContainer()
 		self.Audiocontainer = eConsoleAppContainer()
 		self.lastservice = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -282,6 +290,18 @@ class IPAudioScreen(Screen):
 			self["list"].show()
 			self.radioList = list
 			self["server"].setText('World of enigma2')
+   
+		elif self.choices[self.plIndex] == 'c+fr':
+			list = []
+			list.append(('c+', '-bs1'))
+			list.append(('c+sport', '-bs2'))
+			list.append(('bs1 fr', '-bs3'))
+			list.append(('bs2 fr', '-bs4'))
+			list.append(('bs3 fr', '-bs5'))
+			self["list"].l.setList(self.iniMenu(list))
+			self["list"].show()
+			self.radioList = list
+			self["server"].setText('C+FR')
 
 		elif self.choices[self.plIndex] == 'server1':
 			list = []
@@ -321,18 +341,18 @@ class IPAudioScreen(Screen):
 				self["server"].setText('Cannot load playlist')
 	
 	def iniMenu(self,sList):
-			res = []
-			gList = []
-			for elem in sList:
-					if isHD():
-						res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
-						res.append(MultiContentEntryText(pos=(5, 2), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
-					else:
-						res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
-						res.append(MultiContentEntryText(pos=(5, 7), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
-					gList.append(res)
-					res = []
-			return gList
+		res = []
+		gList = []
+		for elem in sList:
+				if isHD():
+					res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
+					res.append(MultiContentEntryText(pos=(5, 2), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
+				else:
+					res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
+					res.append(MultiContentEntryText(pos=(5, 7), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
+				gList.append(res)
+				res = []
+		return gList
 
 	def ok(self):
 		if fileExists('/usr/bin/gst1.0-ipaudio'):
@@ -357,7 +377,8 @@ class IPAudioScreen(Screen):
 	
 	def resetAudio(self):
 		self.kill_pid()
-		self.audio_start()
+		if not self.alsa:
+			self.audio_start()
 
 	def runCmdAndSaveProcessIdToFile(self, cmd, pidFile, option):
 		if is_compatible() and not config.plugins.IPAudio.keepaudio.value:
@@ -371,6 +392,13 @@ class IPAudioScreen(Screen):
 				self.container.execute(cmd)
 				config.plugins.IPAudio.running.value = "1"
 				config.plugins.IPAudio.running.save()
+		elif self.alsa:
+			self.kill_pid()
+			self.alsa.stop()
+			self.alsa.close()
+			self.container.execute(cmd)
+			config.plugins.IPAudio.running.value = "1"
+			config.plugins.IPAudio.running.save()
 		elif config.plugins.IPAudio.keepaudio.value:
 			self.kill_pid()
 			self.container.execute(cmd)
@@ -439,7 +467,7 @@ class IPAudio(Screen):
 			self.IPAudiocontainer.execute('mv /dev/dvb/adapter0/audio10 /dev/dvb/adapter0/audio0')
 			config.plugins.IPAudio.running.value = '0'
 			config.plugins.IPAudio.running.save()
-		elif config.plugins.IPAudio.running.value == '1' and config.plugins.IPAudio.keepaudio.value:
+		elif config.plugins.IPAudio.running.value == '1' and config.plugins.IPAudio.keepaudio.value or HAVE_EALSA:
 			self.kill_pid()
 		else:
 			if config.plugins.IPAudio.running.value == '1' and is_compatible():
