@@ -1,5 +1,11 @@
 {
-    "Server A": {
+    "AFCON 2022 TOTAL": {
+        "cmds": [
+            "BS YSF BACKUP (During live games only)|-ys",
+            "BS MAX 1|-mx1",
+            "BS MAX 2|-mx2"
+        ]
+    },"Server A": {
         "cmds": [
             "BS1 PREM|-en8",
             "BS2 PREM|-en9",

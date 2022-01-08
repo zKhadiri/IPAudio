@@ -26,7 +26,7 @@ def getversioninfo():
 
 Ver = getversioninfo()
 
-#### SKIN IPAudioSetup ICOON
+#### SKIN IPAudioSetup ICONE
 if isHD():
 	SKIN_IPAudioSetup_ICONE ="""
 		<screen name="IPAudioSetup" position="center,center" size="850,400" title="IPAudio Setup" flags="wfNoBorder">
@@ -101,7 +101,7 @@ else:
 			<widget source="Title" position="455,32" size="251,45" render="Label" font="Regular;35" foregroundColor="#00000000" backgroundColor="#77ffffff" transparent="1" />
 			</screen>"""
 
-#### SKIN IPAudioScreen ICOON
+#### SKIN IPAudioScreen ICONE
 if isHD():
 	SKIN_IPAudioScreen_ICONE="""
 		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
@@ -113,7 +113,7 @@ if isHD():
 	  		<convert type="ClockToText">Default</convert>
 		</widget>
 		<widget name="server" font="Regular;22" foregroundColor="white" backgroundColor="#16000000" position="207,162" size="289,55" transparent="1" zPosition="5" />
-		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="on" />
+		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="40,255" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;16" transparent="1" />
 		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="518,110" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="448,255" size="50,18" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/key_menu.png" alphatest="on" zPosition="5" />
@@ -130,7 +130,7 @@ else:
 	  		<convert type="ClockToText">Default</convert>
 		</widget>
 		<widget name="server" font="Regular;32" foregroundColor="white" backgroundColor="#16000000" position="200,255" size="400,40" halign="center" valign="center" transparent="1" zPosition="5" />
-		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="on" />
+		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="100,385" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;19" transparent="1" />
 		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="689,387" size="60,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/key_menu.png" alphatest="on" zPosition="5" />
@@ -151,7 +151,7 @@ if isHD():
 	  		<convert type="ClockToText">Default</convert>
 		</widget>
 		<widget name="server" font="Regular;22" foregroundColor="#00ffffff" backgroundColor="#16000000" position="207,162" size="289,55" transparent="1" zPosition="5" />
-		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="on" />
+		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="55,255" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="#00ffffff" backgroundColor="#16000000" font="Regular;16" transparent="1" />
 		<widget name="list" foregroundColor="#00ffffff" backgroundColor="#16000000" position="518,135" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="448,255" size="50,18" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/key_menu.png" alphatest="on" zPosition="5" />
@@ -164,15 +164,89 @@ else:
 		<eLabel position="85,171" zPosition="-1" size="666,280" backgroundColor="#16000000"/>
 		<eLabel position="85,99" zPosition="-1" size="666,66" backgroundColor="#77ffffff"/>
 		<eLabel position="775,99" zPosition="1" size="614,66" backgroundColor="#77ffffff"/>
-		<ePixmap position="695,270" zPosition="2" size="52,21" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/left_right_zap.png" alphatest="on" />
+  		<ePixmap position="85,247" zPosition="2" size="666,58" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_1pixmap.png" alphatest="on" />
+		<ePixmap position="695,267" zPosition="2" size="52,21" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/left_right_zap.png" alphatest="on" />
 		<widget source="Title" position="274,115" size="425,40" render="Label" font="Regular;30" foregroundColor="#00000000" backgroundColor="#77ffffff" transparent="1" />
 		<widget font="Regular;35" foregroundColor="#00000000" backgroundColor="#77ffffff" halign="center" position="1015,108" render="Label" size="143,52" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
 	  		<convert type="ClockToText">Default</convert>
 		</widget>
-		<widget name="server" font="Regular;32" foregroundColor="#00ffffff" backgroundColor="#16000000" position="161,255" size="523,55" transparent="1" zPosition="5" />
-		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="on" />
+		<widget name="server" font="Regular;32" foregroundColor="#00ffffff" backgroundColor="#16000000" position="148,248" size="523,55" transparent="1" halign="center" valign="center" zPosition="5" />
+		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="140,385" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="#00ffffff" backgroundColor="#16000000" font="Regular;25" transparent="1" />
 		<widget name="list" foregroundColor="#00ffffff" backgroundColor="#16000000" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="689,387" size="60,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/key_menu.png" alphatest="on" zPosition="5" />
 		<widget name="sync" foregroundColor="#00ffffff" backgroundColor="#16000000" position="86,418" size="660,28" font="Regular;26" />
+  		</screen>""".format(Ver)
+
+#### SKIN IPAudioPlaylist ICONE
+if isHD():
+	SKIN_IPAudioPlaylist_ICONE="""
+		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
+		<ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/bg_screen_hd.png" alphatest="on" />
+		<ePixmap position="54,151" zPosition="2" size="447,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_1pixmap.png" alphatest="on" />
+		<widget source="Title" position="141,72" size="360,35" render="Label" font="Regular;25" foregroundColor="#3b3b3d" backgroundColor="#16000000" transparent="1" />
+		<widget font="Regular;30" foregroundColor="#3b3b3d" backgroundColor="#16000000" halign="center" position="637,63" render="Label" size="143,52" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
+	  		<convert type="ClockToText">Default</convert>
+		</widget>
+		<widget name="server" font="Regular;22" foregroundColor="white" backgroundColor="#16000000" position="207,162" size="289,55" transparent="1" zPosition="5" />
+		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="blend" />
+		<widget name="key_green" position="40,255" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;16" transparent="1" />
+		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="518,110" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="key_red" position="348,255" size="250,30" halign="left" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;16" transparent="1" />
+		<ePixmap position="448,246" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
+  		</screen>""".format(Ver)
+else:		
+	SKIN_IPAudioPlaylist_ICONE="""
+		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
+		<ePixmap position="0,0" zPosition="-1" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/bg_screen_fullhd.png" alphatest="on" />
+		<ePixmap position="85,247" zPosition="2" size="666,58" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_1pixmap.png" alphatest="on" />
+		<widget source="Title" position="274,115" size="425,40" render="Label" font="Regular;30" foregroundColor="#3b3b3d" backgroundColor="white" transparent="1" />
+		<widget font="Regular;35" foregroundColor="#3b3b3d" backgroundColor="white" halign="center" position="1015,108" render="Label" size="143,52" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
+	  		<convert type="ClockToText">Default</convert>
+		</widget>
+		<widget name="server" font="Regular;32" foregroundColor="white" backgroundColor="#16000000" position="200,255" size="400,40" halign="center" valign="center" transparent="1" zPosition="5" />
+		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="blend" />
+		<widget name="key_green" position="100,385" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;19" transparent="1" />
+		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="key_red" position="560,385" size="250,30" halign="left" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;19" transparent="1" />
+		<ePixmap position="660,375" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
+  		</screen>""".format(Ver)
+
+
+if isHD():
+	SKIN_IPAudioPlaylist_Light="""
+		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
+		<eLabel position="512,131" zPosition="-1" size="420,500" backgroundColor="#16000000"/>
+		<eLabel position="35,131" zPosition="-1" size="470,178" backgroundColor="#16000000"/>
+		<eLabel position="35,64" zPosition="-1" size="470,66" backgroundColor="#77ffffff"/>
+		<eLabel position="512,64" zPosition="1" size="420,66" backgroundColor="#77ffffff"/>
+		<widget source="Title" position="141,82" size="360,35" render="Label" font="Regular;25" foregroundColor="#00000000" backgroundColor="#77ffffff" transparent="1" />
+		<widget font="Regular;30" foregroundColor="#00000000" backgroundColor="#77ffffff" halign="center" position="637,82" render="Label" size="143,35" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
+	  		<convert type="ClockToText">Default</convert>
+		</widget>
+		<widget name="server" font="Regular;22" foregroundColor="#00ffffff" backgroundColor="#16000000" position="207,162" size="289,55" transparent="1" zPosition="5" />
+		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="blend" />
+		<widget name="key_green" position="55,255" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="#00ffffff" backgroundColor="#16000000" font="Regular;16" transparent="1" />
+		<widget name="list" foregroundColor="#00ffffff" backgroundColor="#16000000" position="518,135" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="key_red" position="348,255" size="250,30" halign="left" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;16" transparent="1" />
+		<ePixmap position="448,246" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
+  		</screen>""".format(Ver)
+else:
+	SKIN_IPAudioPlaylist_Light="""
+		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
+		<eLabel position="775,171" zPosition="-1" size="614,708" backgroundColor="#16000000"/>
+		<eLabel position="85,171" zPosition="-1" size="666,280" backgroundColor="#16000000"/>
+		<eLabel position="85,99" zPosition="-1" size="666,66" backgroundColor="#77ffffff"/>
+		<eLabel position="775,99" zPosition="1" size="614,66" backgroundColor="#77ffffff"/>
+  		<ePixmap position="85,247" zPosition="2" size="666,58" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_1pixmap.png" alphatest="on" />
+		<widget source="Title" position="274,115" size="425,40" render="Label" font="Regular;30" foregroundColor="#00000000" backgroundColor="#77ffffff" transparent="1" />
+		<widget font="Regular;35" foregroundColor="#00000000" backgroundColor="#77ffffff" halign="center" position="1015,108" render="Label" size="143,52" source="global.CurrentTime" transparent="1" valign="center" zPosition="5">
+	  		<convert type="ClockToText">Default</convert>
+		</widget>
+		<widget name="server" font="Regular;32" foregroundColor="#00ffffff" backgroundColor="#16000000" position="148,248" size="523,55" transparent="1" halign="center" valign="center" zPosition="5" />
+		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="blend" />
+		<widget name="key_green" position="140,385" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="#00ffffff" backgroundColor="#16000000" font="Regular;25" transparent="1" />
+		<widget name="list" foregroundColor="#00ffffff" backgroundColor="#16000000" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="key_red" position="530,385" size="250,30" halign="left" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;25" transparent="1" />
+		<ePixmap position="660,375" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
   		</screen>""".format(Ver)

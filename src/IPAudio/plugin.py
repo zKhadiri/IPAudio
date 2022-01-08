@@ -48,6 +48,7 @@ config.plugins.IPAudio.update = ConfigYesNo(default=True)
 config.plugins.IPAudio.mainmenu = ConfigYesNo(default=False)
 config.plugins.IPAudio.keepaudio = ConfigYesNo(default=False)
 config.plugins.IPAudio.volLevel = ConfigSelectionNumber(default=1, stepwidth=1, min=1, max=10, wraparound=True)
+config.plugins.IPAudio.playlist = ConfigSelection(choices = [("1", _("Press OK"))], default = "1")
 config.plugins.IPAudio.running = ConfigText()
 config.plugins.IPAudio.lastidx = ConfigText()
 
@@ -142,6 +143,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
         self.list = [getConfigListEntry(_("Sync Audio using"), config.plugins.IPAudio.sync)]
         self.list.append(getConfigListEntry(_("External links volume level"), config.plugins.IPAudio.volLevel))
         self.list.append(getConfigListEntry(_("Keep original channel audio"), config.plugins.IPAudio.keepaudio))
+        self.list.append(getConfigListEntry(_("Remove/Reset Playlist"), config.plugins.IPAudio.playlist))
         self.list.append(getConfigListEntry(_("Enable/Disable online update"), config.plugins.IPAudio.update))
         self.list.append(getConfigListEntry(_("Show IPAudio in main menu"), config.plugins.IPAudio.mainmenu))
         self.list.append(getConfigListEntry(_("Select Your IPAudio Skin"), config.plugins.IPAudio.skin))
@@ -149,14 +151,18 @@ class IPAudioSetup(Screen, ConfigListScreen):
         self["config"].setList(self.list)
         
     def apply(self):
-        for x in self["config"].list:
-            if len(x)>1:
-                x[1].save()
-        configfile.save()
-        if self.currentSkin != config.plugins.IPAudio.skin.value:
-            self.close(True)
+        current = self["config"].getCurrent()
+        if current[1] == config.plugins.IPAudio.playlist:
+            self.session.open(IPAudioPlaylist)
         else:
-            self.close()
+            for x in self["config"].list:
+                if len(x)>1:
+                    x[1].save()
+            configfile.save()
+            if self.currentSkin != config.plugins.IPAudio.skin.value:
+                self.close(True)
+            else:
+                self.close()
 
     def changedEntry(self):
         for x in self.onChangedEntry:
@@ -184,7 +190,7 @@ class IPAudioScreen(Screen):
             self["list"].l.setItemHeight(58)
             self["list"].l.setFont(0, gFont('Regular', 28))
         self["key_green"] = Button(_("Reset Audio"))
-        self["myActionMap"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
+        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
         {
             "ok": self.ok,
             "cancel": boundFunction(self.exit, True),
@@ -198,7 +204,6 @@ class IPAudioScreen(Screen):
         if HAVE_EALSA:
             self.alsa = eAlsaOutput.getInstance()       
         self.container = eConsoleAppContainer()
-        self.Audiocontainer = eConsoleAppContainer()
         self.lastservice = self.session.nav.getCurrentlyPlayingServiceReference()
         if config.plugins.IPAudio.update.value:
             self.checkupdates()
@@ -310,10 +315,14 @@ class IPAudioScreen(Screen):
                     list = []
                     for channel in playlist['playlist']:
                         list.append((str(channel['channel']), str(channel['url'])))
-                    self["list"].l.setList(self.iniMenu(list))
-                    self["list"].show()
-                    self.radioList = list
-                    self["server"].setText('Custom Playlist')
+                    if len(list) > 0:
+                        self["list"].l.setList(self.iniMenu(list))
+                        self["list"].show()
+                        self.radioList = list
+                        self["server"].setText('Custom Playlist')
+                    else:
+                        self["list"].hide()
+                        self["server"].setText('Playlist is empty')
                 else:
                     self["list"].hide()
                     self["server"].setText('Cannot load playlist')
@@ -375,9 +384,8 @@ class IPAudioScreen(Screen):
         
     def audio_start(self):
         if fileExists('/dev/dvb/adapter0/audio10'):
+            os.rename('/dev/dvb/adapter0/audio10','/dev/dvb/adapter0/audio0')
             self.session.nav.stopService()
-            cmd = 'mv /dev/dvb/adapter0/audio10 /dev/dvb/adapter0/audio0'
-            self.Audiocontainer.execute(cmd)
             self.session.nav.playService(self.lastservice)
         elif config.plugins.IPAudio.running.value == "1" and is_compatible():
             cmd = 'gst1.0-ipaudio Unmute'
@@ -391,8 +399,7 @@ class IPAudioScreen(Screen):
     def runCmdAndSaveProcessIdToFile(self, cmd, pidFile, option):
         if is_compatible() and not config.plugins.IPAudio.keepaudio.value:
             if not fileExists('/tmp/.ipaudio.pid'):
-                self.Audiocontainer.execute('gst1.0-ipaudio Mute')
-                self.container.execute(cmd)
+                self.container.execute('gst1.0-ipaudio Mute && '+cmd)
                 config.plugins.IPAudio.running.value = "1"
                 config.plugins.IPAudio.running.save()
             else:
@@ -415,7 +422,7 @@ class IPAudioScreen(Screen):
         else:
             if not fileExists('/tmp/.ipaudio.pid') and fileExists('/dev/dvb/adapter0/audio0'):
                 self.session.nav.stopService()
-                self.Audiocontainer.execute('mv /dev/dvb/adapter0/audio0 /dev/dvb/adapter0/audio10')
+                os.rename('/dev/dvb/adapter0/audio0','/dev/dvb/adapter0/audio10')
                 self.container.execute(cmd)
                 self.session.nav.playService(self.lastservice)
                 config.plugins.IPAudio.running.value = "1"
@@ -438,28 +445,80 @@ class IPAudioScreen(Screen):
             os.remove('/tmp/.ipaudio.pid')
             if self.container.running():
                 self.container.kill()
-
-    def readFromFileIfExists(self, fileName, options):
-        if fileExists(fileName):
-            with open(fileName, options) as file:
-                return file.read().replace('\n', '').strip()
-        return ""
     
     def Config_lctr(self):
         self.session.openWithCallback(self.exit, IPAudioSetup)
         
     def exit(self,ret=False):
-        if self.Audiocontainer.running():
-            self.Audiocontainer.kill()
         if ret:
             self.close()
-        
+
+class IPAudioPlaylist(IPAudioScreen):
+
+    def __init__(self,session):
+        IPAudioScreen.__init__(self, session)
+        if config.plugins.IPAudio.skin.value == 'Icone':
+            self.skin = SKIN_IPAudioPlaylist_ICONE
+        elif config.plugins.IPAudio.skin.value == 'light':
+            self.skin = SKIN_IPAudioPlaylist_Light
+        self["key_green"] = Button(_("Remove Link"))
+        self["key_red"] = Button(_("Reset Playlist"))
+        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
+        {
+            "cancel": self.exit,
+            "green": self.keyGreen,
+            "red": self.keyRed,
+        }, -1)
+        self.onLayoutFinish = []
+        self.onShown = []
+        self.loadPlaylist()
+
+    def loadPlaylist(self):
+        playlist = getPlaylist()
+        if playlist:
+            list = []
+            for channel in playlist['playlist']:
+                try:
+                    list.append((str(channel['channel']), str(channel['url'])))
+                except KeyError:pass
+            if len(list) > 0:
+                self["list"].l.setList(self.iniMenu(list))
+                self["server"].setText('Custom Playlist')
+            else:
+                self["list"].hide()
+                self["server"].setText('Playlist is empty')
+        else:
+            self["list"].hide()
+            self["server"].setText('Cannot load playlist')
+
+    def keyRed(self):
+        playlist = getPlaylist()
+        if playlist:
+            playlist['playlist'] = []
+            with open("/etc/enigma2/ipaudio.json", 'w')as f:
+                json.dump(playlist, f , indent = 4)
+            self.loadPlaylist()
+
+    def keyGreen(self):
+        playlist = getPlaylist()
+        if playlist:
+            if len(playlist['playlist']) > 0:
+                index = self['list'].getSelectionIndex()
+                currentPlaylist = playlist["playlist"]
+                del currentPlaylist[index]
+                playlist['playlist'] = currentPlaylist
+                with open("/etc/enigma2/ipaudio.json", 'w')as f:
+                    json.dump(playlist, f , indent = 4)
+                self.loadPlaylist()
+
+    def exit(self):
+        self.close()
+    
 class IPAudio(Screen):
     
     def __init__(self,session):
         Screen.__init__(self, session)
         self.session = session
-        self.IPAudiocontainer = eConsoleAppContainer()
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
             iPlayableService.evEnd: self.__evEnd,
             iPlayableService.evStopped: self.__evEnd,
@@ -473,7 +532,7 @@ class IPAudio(Screen):
     def __evEnd(self):
         if fileExists('/dev/dvb/adapter0/audio10') and config.plugins.IPAudio.running.value == '1':
             self.kill_pid()
-            self.IPAudiocontainer.execute('mv /dev/dvb/adapter0/audio10 /dev/dvb/adapter0/audio0')
+            os.rename('/dev/dvb/adapter0/audio10','/dev/dvb/adapter0/audio0')
             config.plugins.IPAudio.running.value = '0'
             config.plugins.IPAudio.running.save()
         elif config.plugins.IPAudio.running.value == '1' and config.plugins.IPAudio.keepaudio.value or HAVE_EALSA:
@@ -481,13 +540,12 @@ class IPAudio(Screen):
         else:
             if config.plugins.IPAudio.running.value == '1' and is_compatible():
                 self.kill_pid()
-                self.IPAudiocontainer.execute('gst1.0-ipaudio Unmute')
+                os.system('gst1.0-ipaudio Unmute')
                 config.plugins.IPAudio.running.value = '0'
                 config.plugins.IPAudio.running.save()
         
     def gotSession(self):
         keymap = resolveFilename(SCOPE_PLUGINS, "Extensions/IPAudio/keymap.xml")
-        global globalActionMap
         readKeymap(keymap)
         globalActionMap.actions['IPAudioSelection'] = self.ShowHide
         
