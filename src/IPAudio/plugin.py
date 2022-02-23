@@ -55,11 +55,11 @@ config.plugins.IPAudio.playlist = ConfigSelection(choices=[("1", _("Press OK"))]
 config.plugins.IPAudio.running = ConfigText()
 config.plugins.IPAudio.lastidx = ConfigText()
 
-REDC =  '\033[31m'
+REDC = '\033[31m'
 ENDC = '\033[m'
 
 def cprint(text):                                                               
-    print(REDC+text+ENDC)
+    print(REDC + text + ENDC)
 
 def trace_error():
     import sys
@@ -159,7 +159,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
             self.session.open(IPAudioPlaylist)
         else:
             for x in self["config"].list:
-                if len(x)>1:
+                if len(x) > 1:
                     x[1].save()
             configfile.save()
             if self.currentSkin != config.plugins.IPAudio.skin.value:
@@ -184,7 +184,7 @@ class IPAudioScreen(Screen):
         self.plIndex = 0
         self['server'] = Label()
         self['sync'] = Label()
-        self['sync'].setText('Audio sink : '+get_Lecteur())
+        self['sync'].setText('Audio sink : ' + get_Lecteur())
         self["list"] = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         if isHD():
             self["list"].l.setItemHeight(50)
@@ -242,14 +242,14 @@ class IPAudioScreen(Screen):
         else:
             data = data.encode("utf-8")
         if data:
-            lines=data.split("\n")
+            lines = data.split("\n")
             for line in lines:
                 if line.startswith("version"):
                    self.new_version = line.split("=")[1]
                 if line.startswith("description"):
                    self.new_description = line.split("=")[1]
                    break
-        if float(Ver) == float(self.new_version) or float(Ver)>float(self.new_version):
+        if float(Ver) == float(self.new_version) or float(Ver) > float(self.new_version):
             pass
         else:
             new_version = self.new_version
@@ -290,20 +290,20 @@ class IPAudioScreen(Screen):
             self.radioList = list
             
     def right(self):
-        self['sync'].setText('Audio sink : '+get_Lecteur())
-        self.plIndex +=1
+        self['sync'].setText('Audio sink : ' + get_Lecteur())
+        self.plIndex += 1
         self.changePlaylist()
         
     def left(self):
-        self['sync'].setText('Audio sink : '+get_Lecteur())
-        self.plIndex -=1
+        self['sync'].setText('Audio sink : ' + get_Lecteur())
+        self.plIndex -= 1
         self.changePlaylist()
         
     def changePlaylist(self):
-        if self.plIndex > (len(self.choices)-1):
+        if self.plIndex > (len(self.choices) - 1):
            self.plIndex = 0
         if self.plIndex < 0:
-           self.plIndex = len(self.choices)-1
+           self.plIndex = len(self.choices) - 1
         self.setPlaylist()
         
     def setPlaylist(self):
@@ -363,10 +363,10 @@ class IPAudioScreen(Screen):
         gList = []
         for elem in sList:
             if isHD():
-                res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
+                res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
                 res.append(MultiContentEntryText(pos=(5, 2), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
             else:
-                res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER |RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
+                res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
                 res.append(MultiContentEntryText(pos=(5, 7), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
             gList.append(res)
             res = []
@@ -402,7 +402,7 @@ class IPAudioScreen(Screen):
     def runCmdAndSaveProcessIdToFile(self, cmd, pidFile, option):
         if is_compatible() and not config.plugins.IPAudio.keepaudio.value:
             if not fileExists('/tmp/.ipaudio.pid'):
-                self.container.execute('gst1.0-ipaudio Mute && '+cmd)
+                self.container.execute('gst1.0-ipaudio Mute && ' + cmd)
                 config.plugins.IPAudio.running.value = "1"
                 config.plugins.IPAudio.running.save()
             else:

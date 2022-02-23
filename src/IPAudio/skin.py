@@ -28,7 +28,7 @@ Ver = getversioninfo()
 
 #### SKIN IPAudioSetup ICONE
 if isHD():
-	SKIN_IPAudioSetup_ICONE ="""
+	SKIN_IPAudioSetup_ICONE = """
 		<screen name="IPAudioSetup" position="center,center" size="850,400" title="IPAudio Setup" flags="wfNoBorder">
 		<ePixmap position="0,0" zPosition="-1" size="850,400" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/setup_screen.png" alphatest="on" />
 		<ePixmap position="10,335" zPosition="1" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/red.png" alphatest="on" />
@@ -103,7 +103,7 @@ else:
 
 #### SKIN IPAudioScreen ICONE
 if isHD():
-	SKIN_IPAudioScreen_ICONE="""
+	SKIN_IPAudioScreen_ICONE = """
 		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/bg_screen_hd.png" alphatest="on" />
 		<ePixmap position="54,151" zPosition="2" size="447,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_1pixmap.png" alphatest="on" />
@@ -120,7 +120,7 @@ if isHD():
 		<widget name="sync" foregroundColor="white" backgroundColor="#252525" position="56,282" size="443,17" font="Regular;15" />
   		</screen>""".format(Ver)
 else:		
-	SKIN_IPAudioScreen_ICONE="""
+	SKIN_IPAudioScreen_ICONE = """
 		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<ePixmap position="0,0" zPosition="-1" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/bg_screen_fullhd.png" alphatest="on" />
 		<ePixmap position="85,247" zPosition="2" size="666,58" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_1pixmap.png" alphatest="on" />
@@ -139,7 +139,7 @@ else:
 
 #### SKIN IPAudioScreen Light
 if isHD():
-	SKIN_IPAudioScreen_Light="""
+	SKIN_IPAudioScreen_Light = """
 		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<eLabel position="512,131" zPosition="-1" size="420,500" backgroundColor="#16000000"/>
 		<eLabel position="35,131" zPosition="-1" size="470,178" backgroundColor="#16000000"/>
@@ -158,7 +158,7 @@ if isHD():
 		<widget name="sync" foregroundColor="#00ffffff" backgroundColor="#16000000" position="56,285" size="443,22" font="Regular;18" />
   		</screen>""".format(Ver)
 else:
-	SKIN_IPAudioScreen_Light="""
+	SKIN_IPAudioScreen_Light = """
 		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<eLabel position="775,171" zPosition="-1" size="614,708" backgroundColor="#16000000"/>
 		<eLabel position="85,171" zPosition="-1" size="666,280" backgroundColor="#16000000"/>
@@ -180,7 +180,7 @@ else:
 
 #### SKIN IPAudioPlaylist ICONE
 if isHD():
-	SKIN_IPAudioPlaylist_ICONE="""
+	SKIN_IPAudioPlaylist_ICONE = """
 		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/bg_screen_hd.png" alphatest="on" />
 		<ePixmap position="54,151" zPosition="2" size="447,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_1pixmap.png" alphatest="on" />
@@ -196,7 +196,7 @@ if isHD():
 		<ePixmap position="448,246" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
   		</screen>""".format(Ver)
 else:		
-	SKIN_IPAudioPlaylist_ICONE="""
+	SKIN_IPAudioPlaylist_ICONE = """
 		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<ePixmap position="0,0" zPosition="-1" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/bg_screen_fullhd.png" alphatest="on" />
 		<ePixmap position="85,247" zPosition="2" size="666,58" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_1pixmap.png" alphatest="on" />
@@ -214,7 +214,7 @@ else:
 
 
 if isHD():
-	SKIN_IPAudioPlaylist_Light="""
+	SKIN_IPAudioPlaylist_Light = """
 		<screen name="IPAudio" position="center,center" size="1280,720" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<eLabel position="512,131" zPosition="-1" size="420,500" backgroundColor="#16000000"/>
 		<eLabel position="35,131" zPosition="-1" size="470,178" backgroundColor="#16000000"/>
@@ -232,7 +232,7 @@ if isHD():
 		<ePixmap position="448,246" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/red.png" alphatest="blend" zPosition="5" scale="1" />
   		</screen>""".format(Ver)
 else:
-	SKIN_IPAudioPlaylist_Light="""
+	SKIN_IPAudioPlaylist_Light = """
 		<screen name="IPAudio" position="center,center" size="1920,1080" title="IPAudio By ZIKO V {}" backgroundColor="#ffffffff" flags="wfNoBorder">
 		<eLabel position="775,171" zPosition="-1" size="614,708" backgroundColor="#16000000"/>
 		<eLabel position="85,171" zPosition="-1" size="666,280" backgroundColor="#16000000"/>
