@@ -38,7 +38,7 @@ PY3 = version_info[0] == 3
 
 config.plugins.IPAudio = ConfigSubsection()
 config.plugins.IPAudio.currentService = ConfigText()
-config.plugins.IPAudio.sync = ConfigSelection(default="alsasink", choices = [
+config.plugins.IPAudio.sync = ConfigSelection(default="alsasink", choices=[
                 ("alsasink", _("alsasink")),
                 ("osssink", _("osssink")),
                 ("autoaudiosink", _("autoaudiosink")),
@@ -51,7 +51,7 @@ config.plugins.IPAudio.update = ConfigYesNo(default=True)
 config.plugins.IPAudio.mainmenu = ConfigYesNo(default=False)
 config.plugins.IPAudio.keepaudio = ConfigYesNo(default=False)
 config.plugins.IPAudio.volLevel = ConfigSelectionNumber(default=1, stepwidth=1, min=1, max=10, wraparound=True)
-config.plugins.IPAudio.playlist = ConfigSelection(choices = [("1", _("Press OK"))], default = "1")
+config.plugins.IPAudio.playlist = ConfigSelection(choices=[("1", _("Press OK"))], default="1")
 config.plugins.IPAudio.running = ConfigText()
 config.plugins.IPAudio.lastidx = ConfigText()
 
@@ -500,7 +500,7 @@ class IPAudioPlaylist(IPAudioScreen):
         if playlist:
             playlist['playlist'] = []
             with open("/etc/enigma2/ipaudio.json", 'w')as f:
-                json.dump(playlist, f , indent = 4)
+                json.dump(playlist, f , indent=4)
             self.loadPlaylist()
 
     def keyGreen(self):
@@ -512,7 +512,7 @@ class IPAudioPlaylist(IPAudioScreen):
                 del currentPlaylist[index]
                 playlist['playlist'] = currentPlaylist
                 with open("/etc/enigma2/ipaudio.json", 'w')as f:
-                    json.dump(playlist, f , indent = 4)
+                    json.dump(playlist, f , indent=4)
                 self.loadPlaylist()
 
     def exit(self):
