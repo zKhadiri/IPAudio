@@ -19,7 +19,7 @@ from enigma import eConsoleAppContainer, getDesktop, eListboxPythonMultiContent,
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.MultiContent import MultiContentEntryText
 from Tools.Directories import fileExists
-from enigma import iPlayableService 
+from enigma import iPlayableService
 try:
     from enigma import eAlsaOutput
     HAVE_EALSA = True
@@ -59,7 +59,7 @@ REDC = '\033[31m'
 ENDC = '\033[m'
 
 
-def cprint(text):                                                               
+def cprint(text):
     print(REDC + text + ENDC)
 
 
@@ -71,8 +71,8 @@ def trace_error():
         traceback.print_exc(file=open('/tmp/IPAudio.log', 'a'))
     except:
         pass
-    
-    
+
+
 def getPlaylist():
     import json
     if fileExists('/etc/enigma2/ipaudio.json'):
@@ -83,7 +83,7 @@ def getPlaylist():
                 trace_error()
     else:
         return None
-    
+
 
 def getversioninfo():
     import os
@@ -126,7 +126,7 @@ def isHD():
 
 
 class IPAudioSetup(Screen, ConfigListScreen):
-    
+
     def __init__(self, session):
         Screen.__init__(self, session)
         self.currentSkin = config.plugins.IPAudio.skin.value
@@ -148,7 +148,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
         self["red_key"] = StaticText(_("Cancel"))
         self.configChanged = False
         self.createSetup()
-        
+
     def createSetup(self):
         self.configChanged = True
         self.list = [getConfigListEntry(_("Sync Audio using"), config.plugins.IPAudio.sync)]
@@ -160,7 +160,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Select Your IPAudio Skin"), config.plugins.IPAudio.skin))
         self["config"].list = self.list
         self["config"].setList(self.list)
-        
+
     def apply(self):
         current = self["config"].getCurrent()
         if current[1] == config.plugins.IPAudio.playlist:
@@ -181,7 +181,7 @@ class IPAudioSetup(Screen, ConfigListScreen):
 
 
 class IPAudioScreen(Screen):
-    
+
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
@@ -214,14 +214,14 @@ class IPAudioScreen(Screen):
         self.alsa = None
         self.guide = dict()
         if HAVE_EALSA:
-            self.alsa = eAlsaOutput.getInstance()       
+            self.alsa = eAlsaOutput.getInstance()
         self.container = eConsoleAppContainer()
         self.lastservice = self.session.nav.getCurrentlyPlayingServiceReference()
         if config.plugins.IPAudio.update.value:
             self.checkupdates()
         self.onLayoutFinish.append(self.getGuide)
         self.onShown.append(self.onWindowShow)
-        
+
     def getHosts(self):
         hosts = resolveFilename(SCOPE_PLUGINS, "Extensions/IPAudio/hosts.json")
         self.hosts = None
@@ -230,7 +230,7 @@ class IPAudioScreen(Screen):
             self.hosts = json.loads(hosts, object_pairs_hook=OrderedDict)
             for host in self.hosts:
                 yield host
-        
+
     def onWindowShow(self):
         self.onShown.remove(self.onWindowShow)
         if config.plugins.IPAudio.lastidx.value:
@@ -240,7 +240,7 @@ class IPAudioScreen(Screen):
             self["list"].moveToIndex(last_channel)
         else:
             self.setPlaylist()
-  
+
     def checkupdates(self):
         url = 'http://linuxsat5.webhop.info/ipaudio/installer.sh'
         self.callUrl(url, self.checkVer)
@@ -284,10 +284,10 @@ class IPAudioScreen(Screen):
     def getMixlerUrls(self):
         url = 'http://linuxsat5.webhop.info/mixlr'
         self.callUrl(url, self.parseData)
-            
+
     def addErrback(self, error=None):
         pass
-        
+
     def parseData(self, data):
         list = []
         data = data.decode("utf-8")
@@ -297,24 +297,24 @@ class IPAudioScreen(Screen):
             self["list"].l.setList(self.iniMenu(list))
             self["list"].show()
             self.radioList = list
-            
+
     def right(self):
         self['sync'].setText('Audio sink : ' + get_Lecteur())
         self.plIndex += 1
         self.changePlaylist()
-        
+
     def left(self):
         self['sync'].setText('Audio sink : ' + get_Lecteur())
         self.plIndex -= 1
         self.changePlaylist()
-        
+
     def changePlaylist(self):
         if self.plIndex > (len(self.choices) - 1):
            self.plIndex = 0
         if self.plIndex < 0:
            self.plIndex = len(self.choices) - 1
         self.setPlaylist()
-        
+
     def setPlaylist(self):
         current = self.choices[self.plIndex]
         if current in self.hosts:
@@ -347,17 +347,17 @@ class IPAudioScreen(Screen):
                 self["list"].show()
                 self.radioList = list
                 self["server"].setText(str(current))
-    
+
     def checkINGuide(self, entries):
         for idx, entry in enumerate(entries):
             if entry[0] in self.guide:
                 entries[idx] = (self.guide[entry[0]]['prog'], entry[1])
         return entries
-        
+
     def getGuide(self):
         url = 'http://linuxsat5.webhop.info/ipaudio/epg.json'
         self.callUrl(url, self.parseGuide)
-        
+
     def parseGuide(self, data):
         if PY3:
             data = data.decode("utf-8")
@@ -366,7 +366,7 @@ class IPAudioScreen(Screen):
         self.guide = json.loads(data)
         if self.guide != {}:
             self.setPlaylist()
-    
+
     def iniMenu(self, sList):
         res = []
         gList = []
@@ -393,7 +393,7 @@ class IPAudioScreen(Screen):
             self.runCmdAndSaveProcessIdToFile(cmd, '/tmp/.ipaudio.pid', 'w')
         else:
             self.session.open(MessageBox, _("Cannot play url, gst1.0-ipaudio is missing !!"), MessageBox.TYPE_ERROR, timeout=5)
-        
+
     def audio_start(self):
         if fileExists('/dev/dvb/adapter0/audio10'):
             os.rename('/dev/dvb/adapter0/audio10', '/dev/dvb/adapter0/audio0')
@@ -402,7 +402,7 @@ class IPAudioScreen(Screen):
         elif config.plugins.IPAudio.running.value == "1" and is_compatible():
             cmd = 'gst1.0-ipaudio Unmute'
             self.container.execute(cmd)
-    
+
     def resetAudio(self):
         self.kill_pid()
         if not self.alsa:
@@ -444,23 +444,23 @@ class IPAudioScreen(Screen):
                 self.container.execute(cmd)
                 config.plugins.IPAudio.running.value = "1"
                 config.plugins.IPAudio.running.save()
-            
+
         if self.container.running():
             pid = self.container.getPID()
             file = open(pidFile, option)
             file.write(str(pid))
             file.close()
-            
+
     def kill_pid(self):
         if fileExists('/tmp/.ipaudio.pid'):
             os.system('killall -9 gst1.0-ipaudio >/dev/null 2>&1')
             os.remove('/tmp/.ipaudio.pid')
             if self.container.running():
                 self.container.kill()
-    
+
     def Config_lctr(self):
         self.session.openWithCallback(self.exit, IPAudioSetup)
-        
+
     def exit(self, ret=False):
         if ret:
             self.close()
@@ -527,10 +527,10 @@ class IPAudioPlaylist(IPAudioScreen):
 
     def exit(self):
         self.close()
-    
+
 
 class IPAudio(Screen):
-    
+
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
@@ -538,7 +538,7 @@ class IPAudio(Screen):
             iPlayableService.evEnd: self.__evEnd,
             iPlayableService.evStopped: self.__evEnd,
         })
-    
+
     def kill_pid(self):
         if fileExists('/tmp/.ipaudio.pid'):
             os.system('killall -9 gst1.0-ipaudio >/dev/null 2>&1')
@@ -558,20 +558,20 @@ class IPAudio(Screen):
                 os.system('gst1.0-ipaudio Unmute')
                 config.plugins.IPAudio.running.value = '0'
                 config.plugins.IPAudio.running.save()
-        
+
     def gotSession(self):
         keymap = resolveFilename(SCOPE_PLUGINS, "Extensions/IPAudio/keymap.xml")
         readKeymap(keymap)
         globalActionMap.actions['IPAudioSelection'] = self.ShowHide
-        
+
     def ShowHide(self):
         self.session.open(IPAudioScreen)
-        
+
 
 def sessionstart(reason, session=None, **kwargs):
     if reason == 0:
         IPAudio(session).gotSession()
-        
+
 
 def main(session, **kwargs):
     session.open(IPAudioScreen)
