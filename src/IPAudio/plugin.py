@@ -12,10 +12,10 @@ try:
 except:
     from Components.ActionMap import loadKeymap as readKeymap
 from Components.Sources.StaticText import StaticText
-from Components.config import config, ConfigSelectionNumber, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection ,ConfigText ,configfile
+from Components.config import config, ConfigSelectionNumber, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection,ConfigText,configfile
 from Components.ConfigList import ConfigListScreen
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
-from enigma import eConsoleAppContainer , getDesktop  , eListboxPythonMultiContent , gFont , RT_HALIGN_LEFT, RT_VALIGN_CENTER , RT_WRAP
+from enigma import eConsoleAppContainer, getDesktop, eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, RT_WRAP
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.MultiContent import MultiContentEntryText
 from Tools.Directories import fileExists
@@ -251,7 +251,7 @@ class IPAudioScreen(Screen):
                    break
         if float(Ver) == float(self.new_version) or float(Ver)>float(self.new_version):
             pass
-        else :
+        else:
             new_version = self.new_version
             new_description = self.new_description
             self.session.openWithCallback(self.installupdate, MessageBox, _('New version %s is available.\n\n%s.\n\nDo you want to install it now.' % (self.new_version, self.new_description)), MessageBox.TYPE_YESNO)
@@ -500,7 +500,7 @@ class IPAudioPlaylist(IPAudioScreen):
         if playlist:
             playlist['playlist'] = []
             with open("/etc/enigma2/ipaudio.json", 'w')as f:
-                json.dump(playlist, f , indent=4)
+                json.dump(playlist, f, indent=4)
             self.loadPlaylist()
 
     def keyGreen(self):
@@ -512,7 +512,7 @@ class IPAudioPlaylist(IPAudioScreen):
                 del currentPlaylist[index]
                 playlist['playlist'] = currentPlaylist
                 with open("/etc/enigma2/ipaudio.json", 'w')as f:
-                    json.dump(playlist, f , indent=4)
+                    json.dump(playlist, f, indent=4)
                 self.loadPlaylist()
 
     def exit(self):
