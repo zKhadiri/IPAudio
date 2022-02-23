@@ -2,6 +2,7 @@ from Screens.Screen import Screen
 from enigma import getDesktop
 import os
 
+
 def getDesktopSize():
 	s = getDesktop(0).size()
 	return (s.width(), s.height())
@@ -10,6 +11,7 @@ def getDesktopSize():
 def isHD():
 	desktopSize = getDesktopSize()
 	return desktopSize[0] == 1280
+
 
 def getversioninfo():
 	currversion = '1.0'
@@ -23,6 +25,7 @@ def getversioninfo():
 		except:
 			pass
 	return (currversion)
+
 
 Ver = getversioninfo()
 

@@ -11,13 +11,16 @@ from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
 
+
 def getDesktopSize():
     s = getDesktop(0).size()
     return (s.width(), s.height())
 
+
 def isHD():
     desktopSize = getDesktopSize()
     return desktopSize[0] == 1280
+
 
 class Console2(Screen):
     if isHD():
