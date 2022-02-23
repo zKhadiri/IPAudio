@@ -12,7 +12,7 @@ try:
 except:
     from Components.ActionMap import loadKeymap as readKeymap
 from Components.Sources.StaticText import StaticText
-from Components.config import config, ConfigSelectionNumber, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection,ConfigText,configfile
+from Components.config import config, ConfigSelectionNumber, getConfigListEntry, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText, configfile
 from Components.ConfigList import ConfigListScreen
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from enigma import eConsoleAppContainer, getDesktop, eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, RT_WRAP
@@ -103,7 +103,7 @@ def get_Lecteur():
     return Leteur
 
 def is_compatible():
-    if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008','sf8008m','viper4kv20','beyonwizv2','ustym4kpro','gbtrio4k','spider-x',):
+    if fileExists('/proc/stb/info/boxtype') and open('/proc/stb/info/boxtype').read().strip() in ('sf8008', 'sf8008m', 'viper4kv20', 'beyonwizv2', 'ustym4kpro', 'gbtrio4k', 'spider-x',):
         return True
     else:
         return False
@@ -132,9 +132,9 @@ class IPAudioSetup(Screen, ConfigListScreen):
         ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
         self["actions"] = ActionMap(["SetupActions"],
             {
-                "cancel":self.keyCancel,
-                "save":self.apply,
-                "ok":self.apply,
+                "cancel": self.keyCancel,
+                "save": self.apply,
+                "ok": self.apply,
             }, -2)
         self["green_key"] = StaticText(_("Save"))
         self["red_key"] = StaticText(_("Cancel"))
@@ -193,14 +193,14 @@ class IPAudioScreen(Screen):
             self["list"].l.setItemHeight(58)
             self["list"].l.setFont(0, gFont('Regular', 28))
         self["key_green"] = Button(_("Reset Audio"))
-        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
+        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions", "WizardActions", "MenuActions"],
         {
             "ok": self.ok,
             "cancel": boundFunction(self.exit, True),
             "green": self.resetAudio,
-            "right":self.right,
-            "left":self.left,
-            "menu":self.Config_lctr,
+            "right": self.right,
+            "left": self.left,
+            "menu": self.Config_lctr,
         }, -1)
         self.alsa = None
         self.guide = dict()
@@ -217,7 +217,7 @@ class IPAudioScreen(Screen):
         hosts = resolveFilename(SCOPE_PLUGINS, "Extensions/IPAudio/hosts.json")
         self.hosts = None
         if fileExists(hosts):
-            hosts = open(hosts,'r').read()
+            hosts = open(hosts, 'r').read()
             self.hosts = json.loads(hosts, object_pairs_hook=OrderedDict)
             for host in self.hosts:
                 yield host
@@ -225,7 +225,7 @@ class IPAudioScreen(Screen):
     def onWindowShow(self):
         self.onShown.remove(self.onWindowShow)
         if config.plugins.IPAudio.lastidx.value:
-            last_playlist,last_channel = map(int,config.plugins.IPAudio.lastidx.value.split(','))
+            last_playlist, last_channel = map(int, config.plugins.IPAudio.lastidx.value.split(','))
             self.plIndex = last_playlist
             self.changePlaylist()
             self["list"].moveToIndex(last_channel)
@@ -234,7 +234,7 @@ class IPAudioScreen(Screen):
   
     def checkupdates(self):
         url = 'http://linuxsat5.webhop.info/ipaudio/installer.sh'
-        self.callUrl(url,self.checkVer)
+        self.callUrl(url, self.checkVer)
 
     def checkVer(self, data):
         if PY3:
@@ -256,16 +256,16 @@ class IPAudioScreen(Screen):
             new_description = self.new_description
             self.session.openWithCallback(self.installupdate, MessageBox, _('New version %s is available.\n\n%s.\n\nDo you want to install it now.' % (self.new_version, self.new_description)), MessageBox.TYPE_YESNO)
 
-    def installupdate(self,answer=False):
+    def installupdate(self, answer=False):
         if answer:
             cmdlist = []
             cmdlist.append('wget -q "--no-check-certificate" http://linuxsat5.webhop.info/ipaudio/installer.sh -O - | /bin/sh')
             self.session.open(Console2, title='Update IPAudio', cmdlist=cmdlist, finishedCallback=self.myCallback, closeOnSuccess=False)
 
-    def myCallback(self,result=None):
+    def myCallback(self, result=None):
         return
 
-    def callUrl(self,url,callback):
+    def callUrl(self, url, callback):
         try:
             from twisted.web.client import getPage
             getPage(str.encode(url), headers={b'Content-Type': b'application/x-www-form-urlencoded'}).addCallback(callback).addErrback(self.addErrback)
@@ -274,9 +274,9 @@ class IPAudioScreen(Screen):
 
     def getMixlerUrls(self):
         url = 'http://linuxsat5.webhop.info/mixlr'
-        self.callUrl(url,self.parseData)
+        self.callUrl(url, self.parseData)
             
-    def addErrback(self,error=None):
+    def addErrback(self, error=None):
         pass
         
     def parseData(self, data):
@@ -340,16 +340,16 @@ class IPAudioScreen(Screen):
                 self["server"].setText(str(current))
     
     def checkINGuide(self, entries):
-        for idx,entry in enumerate(entries):
+        for idx, entry in enumerate(entries):
             if entry[0] in self.guide:
                 entries[idx] = (self.guide[entry[0]]['prog'], entry[1])
         return entries
         
     def getGuide(self):
         url = 'http://linuxsat5.webhop.info/ipaudio/epg.json'
-        self.callUrl(url,self.parseGuide)
+        self.callUrl(url, self.parseGuide)
         
-    def parseGuide(self,data):
+    def parseGuide(self, data):
         if PY3:
             data = data.decode("utf-8")
         else:
@@ -358,16 +358,16 @@ class IPAudioScreen(Screen):
         if self.guide != {}:
             self.setPlaylist()
     
-    def iniMenu(self,sList):
+    def iniMenu(self, sList):
         res = []
         gList = []
         for elem in sList:
             if isHD():
                 res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
-                res.append(MultiContentEntryText(pos=(5, 2), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
+                res.append(MultiContentEntryText(pos=(5, 2), size=(580, 50), font=0, color=16777215, color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
             else:
                 res.append(MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER | RT_WRAP, text='', color=16753920, color_sel=15657130, border_width=3, border_color=806544))
-                res.append(MultiContentEntryText(pos=(5, 7), size=(580, 50), font=0, color=16777215,color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
+                res.append(MultiContentEntryText(pos=(5, 7), size=(580, 50), font=0, color=16777215, color_sel=16777215, backcolor_sel=None, flags=RT_VALIGN_CENTER | RT_HALIGN_LEFT, text=str(elem[0])))
             gList.append(res)
             res = []
         return gList
@@ -376,18 +376,18 @@ class IPAudioScreen(Screen):
         if fileExists('/usr/bin/gst1.0-ipaudio'):
             index = self['list'].getSelectionIndex()
             self.url = self.radioList[index][1]
-            config.plugins.IPAudio.lastidx.value = '{},{}'.format(self.plIndex,index)
+            config.plugins.IPAudio.lastidx.value = '{},{}'.format(self.plIndex, index)
             config.plugins.IPAudio.lastidx.save()
-            cmd = 'gst1.0-ipaudio "{}" {}'.format(self.url,config.plugins.IPAudio.sync.value)
+            cmd = 'gst1.0-ipaudio "{}" {}'.format(self.url, config.plugins.IPAudio.sync.value)
             if self.choices[self.plIndex] == 'Custom Playlist':
                 cmd += ' {}'.format(config.plugins.IPAudio.volLevel.value)
             self.runCmdAndSaveProcessIdToFile(cmd, '/tmp/.ipaudio.pid', 'w')
         else:
-            self.session.open(MessageBox, _("Cannot play url, gst1.0-ipaudio is missing !!"), MessageBox.TYPE_ERROR,timeout=5)
+            self.session.open(MessageBox, _("Cannot play url, gst1.0-ipaudio is missing !!"), MessageBox.TYPE_ERROR, timeout=5)
         
     def audio_start(self):
         if fileExists('/dev/dvb/adapter0/audio10'):
-            os.rename('/dev/dvb/adapter0/audio10','/dev/dvb/adapter0/audio0')
+            os.rename('/dev/dvb/adapter0/audio10', '/dev/dvb/adapter0/audio0')
             self.session.nav.stopService()
             self.session.nav.playService(self.lastservice)
         elif config.plugins.IPAudio.running.value == "1" and is_compatible():
@@ -425,7 +425,7 @@ class IPAudioScreen(Screen):
         else:
             if not fileExists('/tmp/.ipaudio.pid') and fileExists('/dev/dvb/adapter0/audio0'):
                 self.session.nav.stopService()
-                os.rename('/dev/dvb/adapter0/audio0','/dev/dvb/adapter0/audio10')
+                os.rename('/dev/dvb/adapter0/audio0', '/dev/dvb/adapter0/audio10')
                 self.container.execute(cmd)
                 self.session.nav.playService(self.lastservice)
                 config.plugins.IPAudio.running.value = "1"
@@ -452,13 +452,13 @@ class IPAudioScreen(Screen):
     def Config_lctr(self):
         self.session.openWithCallback(self.exit, IPAudioSetup)
         
-    def exit(self,ret=False):
+    def exit(self, ret=False):
         if ret:
             self.close()
 
 class IPAudioPlaylist(IPAudioScreen):
 
-    def __init__(self,session):
+    def __init__(self, session):
         IPAudioScreen.__init__(self, session)
         if config.plugins.IPAudio.skin.value == 'Icone':
             self.skin = SKIN_IPAudioPlaylist_ICONE
@@ -466,7 +466,7 @@ class IPAudioPlaylist(IPAudioScreen):
             self.skin = SKIN_IPAudioPlaylist_Light
         self["key_green"] = Button(_("Remove Link"))
         self["key_red"] = Button(_("Reset Playlist"))
-        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions","WizardActions","MenuActions"],
+        self["IPAudioActions"] = ActionMap(["OkCancelActions", "ColorActions", "WizardActions", "MenuActions"],
         {
             "cancel": self.exit,
             "green": self.keyGreen,
@@ -520,7 +520,7 @@ class IPAudioPlaylist(IPAudioScreen):
     
 class IPAudio(Screen):
     
-    def __init__(self,session):
+    def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
@@ -536,7 +536,7 @@ class IPAudio(Screen):
     def __evEnd(self):
         if fileExists('/dev/dvb/adapter0/audio10') and config.plugins.IPAudio.running.value == '1':
             self.kill_pid()
-            os.rename('/dev/dvb/adapter0/audio10','/dev/dvb/adapter0/audio0')
+            os.rename('/dev/dvb/adapter0/audio10', '/dev/dvb/adapter0/audio0')
             config.plugins.IPAudio.running.value = '0'
             config.plugins.IPAudio.running.save()
         elif config.plugins.IPAudio.running.value == '1' and config.plugins.IPAudio.keepaudio.value or HAVE_EALSA:
@@ -574,5 +574,5 @@ def Plugins(**kwargs):
     Descriptors.append(PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart))
     if config.plugins.IPAudio.mainmenu.value:
         Descriptors.append(PluginDescriptor(where=[PluginDescriptor.WHERE_MENU], fnc=showInmenu))
-    Descriptors.append(PluginDescriptor(name="IPAudio", description="Listen to your favorite commentators",icon="logo.png",where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
+    Descriptors.append(PluginDescriptor(name="IPAudio", description="Listen to your favorite commentators", icon="logo.png", where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
     return Descriptors
