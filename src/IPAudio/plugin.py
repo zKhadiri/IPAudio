@@ -483,7 +483,8 @@ class IPAudioPlaylist(IPAudioScreen):
             for channel in playlist['playlist']:
                 try:
                     list.append((str(channel['channel']), str(channel['url'])))
-                except KeyError:pass
+                except KeyError:
+                    pass
             if len(list) > 0:
                 self["list"].l.setList(self.iniMenu(list))
                 self["server"].setText('Custom Playlist')
