@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Components.Label import Label
@@ -235,7 +235,7 @@ class IPAudioScreen(Screen):
     def onWindowShow(self):
         self.onShown.remove(self.onWindowShow)
         if config.plugins.IPAudio.lastidx.value:
-            last_playlist, last_channel = map(int, config.plugins.IPAudio.lastidx.value.split(','))
+            last_playlist, last_channel = list(map(int, config.plugins.IPAudio.lastidx.value.split(',')))
             self.plIndex = last_playlist
             self.changePlaylist()
             self["list"].moveToIndex(last_channel)
