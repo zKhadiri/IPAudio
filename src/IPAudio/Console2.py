@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 
 from enigma import eConsoleAppContainer
 from Screens.Screen import Screen
@@ -11,13 +11,16 @@ from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
 
+
 def getDesktopSize():
     s = getDesktop(0).size()
     return (s.width(), s.height())
 
+
 def isHD():
     desktopSize = getDesktopSize()
     return desktopSize[0] == 1280
+
 
 class Console2(Screen):
     if isHD():
@@ -43,7 +46,7 @@ class Console2(Screen):
 			<eLabel text="Restart GUI" position="1626,1004" zPosition="2" size="250,40" font="Regular;28" halign="center" valign="center" backgroundColor="#16000000" foregroundColor="#00ffffff" transparent="1"/>
 		</screen>'''
 
-    def __init__(self, session, title = 'Console', cmdlist = None, finishedCallback = None, closeOnSuccess = False, showStartStopText = True, skin = None):
+    def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None):
         Screen.__init__(self, session)
         self.finishedCallback = finishedCallback
         self.closeOnSuccess = closeOnSuccess
@@ -54,7 +57,7 @@ class Console2(Screen):
         self['text'] = ScrollLabel('')
         self['key_red'] = StaticText(_('Cancel'))
         self['key_green'] = StaticText(_('Hide'))
-        self["actions"] = ActionMap(["WizardActions", "DirectionActions",'ColorActions'],
+        self["actions"] = ActionMap(["WizardActions", "DirectionActions", 'ColorActions'],
             {
 		"ok": self.cancel,
 		"up": self["text"].pageUp,
@@ -131,7 +134,7 @@ class Console2(Screen):
         else:
             self.cancel_msg = self.session.openWithCallback(self.cancelCallback, MessageBox, _('Cancel execution?'), type=MessageBox.TYPE_YESNO, default=False)
 
-    def cancelCallback(self, ret = None):
+    def cancelCallback(self, ret=None):
         self.cancel_msg = None
         if ret:
             try: ## DreamOS By RAED
