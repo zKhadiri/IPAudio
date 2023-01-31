@@ -1,41 +1,4 @@
 {
-    "AFCON 2022 TOTAL": {
-        "cmds": [
-            "BS YSF BACKUP (During live games only)|-ys",
-            "BS MAX 1|-mx1",
-            "BS MAX 2|-mx2"
-        ]
-    },"Server A": {
-        "cmds": [
-            "BS1 PREM|-en8",
-            "BS2 PREM|-en9",
-            "BS3 PREM|-en10",
-            "BS1 XTRA|-xt1",
-            "BS2 XTRA|-xt2",
-            "BS1|-en1",
-            "BS2|-en2",
-            "BS3|-en3",
-            "BS4|-en4",
-            "BS5|-en5",
-            "BS6|-en6",
-            "BS7|-en7"
-        ]
-    },
-    "FEED (LIVE GAMES ONLY)": {
-        "cmds": [
-            "FEED1|-bs1",
-            "FEED2|-bs2",
-            "FEED3|-bs3",
-            "FEED4|-bs4",
-            "FEED5|-bs5"
-        ]
-    },
-    "World of enigma2": {
-        "cmds": [
-            "BS YSF BACKUP (During live games only)|-ys",
-            "BS MT BACKUP (During live games only)|-mt"
-        ]
-    },
     "Mixlr Sport": {
         "cmds": []
     },

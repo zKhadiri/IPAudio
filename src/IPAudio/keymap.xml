@@ -2,4 +2,23 @@
 	<map context="GlobalActions">
 		<key id="KEY_AUDIO" mapto="IPAudioSelection" flags="l" />
 	</map>
+	<map context="IPAudioActions">
+		<key id="KEY_EXIT" mapto="cancel" flags="m" />
+		<key id="KEY_EXIT" mapto="back" flags="m" />
+		<key id="KEY_LEFT" mapto="left" flags="mr" />
+		<key id="KEY_RIGHT" mapto="right" flags="mr" />
+		<key id="KEY_UP" mapto="up" flags="mr" />
+		<key id="KEY_DOWN" mapto="down" flags="mr" />
+		<key id="KEY_OK" mapto="ok" flags="b"/>
+		<key id="KEY_OK" mapto="ok_long" flags="l"/>
+		<key id="KEY_MENU" mapto="menu" flags="mr"/>
+		<key id="KEY_GREEN" mapto="green" flags="m"/>
+		<key id="KEY_RED" mapto="red" flags="m"/>
+		<key id="KEY_NEXT" mapto="next" flags="m"/>
+		<key id="KEY_PREVIOUS" mapto="previous" flags="m"/>
+		<key id="KEY_PAUSE" mapto="pause" flags="mr"/>
+		<key id="KEY_PLAYPAUSE" mapto="pause" flags="mr"/>
+		<key id="KEY_VOLUMEUP" mapto="delayUP" flags="mr"/>
+		<key id="KEY_VOLUMEDOWN" mapto="delayDown" flags="mr"/>
+	</map>
 </keymap>
