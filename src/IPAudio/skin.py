@@ -38,7 +38,7 @@ if isHD():
 		<widget source="red_key" render="Label" position="50,345" zPosition="2" size="165,30" font="Regular; 20" halign="center" valign="center" transparent="1" />
 		<ePixmap position="760,335" zPosition="1" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" alphatest="on" />
 		<widget source="green_key" render="Label" position="650,345" zPosition="2" size="165,30" font="Regular; 20" halign="center" valign="center" transparent="1" />
-		<widget position="7,71" size="838,232" name="config" backgroundColor="#202020" foregroundColor="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_setup_pixmap.png" scrollbarMode="showNever" />
+		<widget position="7,71" size="838,232" name="config" backgroundColor="#202020" foregroundColorSelected="white" foregroundColor="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_setup_pixmap.png" scrollbarMode="showNever" />
 		<widget source="Title" position="350,17" size="360,35" render="Label" font="Regular;25" foregroundColor="#3b3b3d" backgroundColor="#16000000" transparent="1" />
 		</screen>"""
 else:
@@ -50,7 +50,7 @@ else:
 			<widget source="red_key" render="Label" position="58,510" zPosition="2" size="165,30" font="Regular; 26" halign="center" valign="center" transparent="1" />
 			<ePixmap position="1060,500" zPosition="1" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" alphatest="on" />
 			<widget source="green_key" render="Label" position="940,510" zPosition="2" size="165,30" font="Regular; 26" halign="center" valign="center" transparent="1" />
-			<widget position="8,107" size="1138,350" name="config" backgroundColor="#202020" foregroundColor="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_setup_pixmap.png" scrollbarMode="showNever" />
+			<widget position="8,107" size="1138,350" name="config" backgroundColor="#202020" foregroundColorSelected="white" foregroundColor="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_setup_pixmap.png" scrollbarMode="showNever" />
 			<widget source="Title" position="455,32" size="251,45" render="Label" font="Regular;35" foregroundColor="#3b3b3d" backgroundColor="#16000000" transparent="1" />
 			</screen>"""
 	else:
@@ -61,7 +61,7 @@ else:
 			<widget source="red_key" render="Label" position="58,510" zPosition="2" size="165,30" font="Regular; 26" halign="center" valign="center" transparent="1" />
 			<ePixmap position="1060,500" zPosition="1" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" alphatest="on" />
 			<widget source="green_key" render="Label" position="940,510" zPosition="2" size="165,30" font="Regular; 26" halign="center" valign="center" transparent="1" />
-			<widget position="8,107" size="1138,350" name="config" backgroundColor="#202020" foregroundColor="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_setup_pixmap.png" font="Regular; 28" scrollbarMode="showNever" />
+			<widget position="8,107" size="1138,350" name="config" backgroundColor="#202020" foregroundColor="white" foregroundColorSelected="white" itemHeight="58" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_setup_pixmap.png" font="Regular; 28" scrollbarMode="showNever" />
 			<widget source="Title" position="455,32" size="251,45" render="Label" font="Regular;35" foregroundColor="#3b3b3d" backgroundColor="#16000000" transparent="1" />
 			</screen>"""
 
@@ -118,7 +118,7 @@ if isHD():
 		<widget name="server" font="Regular;22" foregroundColor="white" backgroundColor="#16000000" position="207,162" size="289,55" transparent="1" zPosition="5" />
 		<ePixmap name="green" position="58,246" zPosition="2" size="60,45" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="40,255" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;16" transparent="1" />
-		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="518,110" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="list" foregroundColor="white" backgroundColor="#202020" foregroundColorSelected="white" position="518,110" size="404,465" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="448,255" size="50,18" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/HD/key_menu.png" alphatest="on" zPosition="5" />
 		<widget name="sync" foregroundColor="white" backgroundColor="#252525" position="56,282" size="443,17" font="Regular;15" />
   		</screen>""".format(Ver)
@@ -135,7 +135,7 @@ else:
 		<widget name="server" font="Regular;32" foregroundColor="white" backgroundColor="#16000000" position="200,255" size="400,40" halign="center" valign="center" transparent="1" zPosition="5" />
 		<ePixmap name="green" position="86,375" zPosition="2" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/green.png" transparent="1" alphatest="blend" />
 		<widget name="key_green" position="100,385" size="250,30" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#202020" font="Regular;19" transparent="1" />
-		<widget name="list" foregroundColor="white" backgroundColor="#202020" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
+		<widget name="list" foregroundColor="white" backgroundColor="#202020" foregroundColorSelected="white" position="783,177" size="599,699" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/list_2pixmap.png" scrollbarMode="showNever" zPosition="2" />
 		<ePixmap position="689,387" size="60,25" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/IPAudio/icons/FHD/key_menu.png" alphatest="on" zPosition="5" />
 		<widget name="sync" foregroundColor="white" backgroundColor="#252525" position="86,418" size="667,28" font="Regular;20" />
   		</screen>""".format(Ver)
