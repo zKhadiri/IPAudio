@@ -27,8 +27,6 @@ except ImportError:
     HAVE_EALSA = False
 from Plugins.Extensions.IPAudio.Console2 import Console2
 import os
-import time
-import sys
 import json
 from .skin import *
 from sys import version_info
@@ -223,10 +221,12 @@ class IPAudioScreen(Screen):
             "right": self.right,
             "left": self.left,
             "pause": self.pause,
+            "pauseAudio": self.pauseAudio,
             "delayUP": self.delayUP,
             "delayDown": self.delayDown,
         }, -1)
         self.alsa = None
+        self.audioPaused = False
         self.guide = dict()
         if HAVE_EALSA:
             self.alsa = eAlsaOutput.getInstance()
@@ -244,6 +244,17 @@ class IPAudioScreen(Screen):
     def getTimeshift(self):
         service = self.session.nav.getCurrentService()
         return service and service.timeshift()
+
+    def pauseAudio(self):
+        if config.plugins.IPAudio.running.value and IPAudioHandler.container.running():
+            pid = IPAudioHandler.container.getPID()
+            if not self.audioPaused:
+                cmd = "kill -STOP {}".format(pid)
+                self.audioPaused = True
+            else:
+                cmd = "kill -CONT {}".format(pid)
+                self.audioPaused = False
+            eConsoleAppContainer().execute(cmd)
 
     def pause(self):
         global delay
@@ -327,18 +338,13 @@ class IPAudioScreen(Screen):
         if float(Ver) == float(self.new_version) or float(Ver) > float(self.new_version):
             pass
         else:
-            new_version = self.new_version
-            new_description = self.new_description
             self.session.openWithCallback(self.installupdate, MessageBox, _('New version %s is available.\n\n%s.\n\nDo you want to install it now.' % (self.new_version, self.new_description)), MessageBox.TYPE_YESNO)
 
     def installupdate(self, answer=False):
         if answer:
             cmdlist = []
             cmdlist.append('wget -q "--no-check-certificate" http://ipkinstall.ath.cx/ipaudio/installer-ffmpeg.sh -O - | /bin/sh')
-            self.session.open(Console2, title='Update IPAudio', cmdlist=cmdlist, finishedCallback=self.myCallback, closeOnSuccess=False)
-
-    def myCallback(self, result=None):
-        return
+            self.session.open(Console2, title='Update IPAudio', cmdlist=cmdlist, closeOnSuccess=False)
 
     def callUrl(self, url, callback):
         try:
@@ -466,7 +472,7 @@ class IPAudioScreen(Screen):
         else:
             self.session.open(MessageBox, _("Cannot play url, {} is missing !!".format(config.plugins.IPAudio.player.value)), MessageBox.TYPE_ERROR, timeout=5)
 
-    def audioStart(self):
+    def audioReStart(self):
         if fileExists('/dev/dvb/adapter0/audio10') and config.plugins.IPAudio.running.value and not isMutable():
             self.session.nav.stopService()
             self.session.nav.playService(self.lastservice)
@@ -480,7 +486,7 @@ class IPAudioScreen(Screen):
         if IPAudioHandler.container.running():
             IPAudioHandler.container.kill()
         if not self.alsa:
-            self.audioStart()
+            self.audioReStart()
 
     def runCmd(self, cmd):
         if self.alsa:
