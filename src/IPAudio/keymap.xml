@@ -19,7 +19,7 @@
 		<key id="KEY_PLAY" mapto="pauseAudio" flags="mr"/>
 		<key id="KEY_PAUSE" mapto="pause" flags="mr"/>
 		<key id="KEY_PLAYPAUSE" mapto="pause" flags="mr"/>
-		<key id="KEY_VOLUMEUP" mapto="delayUP" flags="mr"/>
-		<key id="KEY_VOLUMEDOWN" mapto="delayDown" flags="mr"/>
+		<key id="KEY_CHANNELUP" mapto="delayUP" flags="mr"/>
+		<key id="KEY_CHANNELDOWN" mapto="delayDown" flags="mr"/>
 	</map>
 </keymap>

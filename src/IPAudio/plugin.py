@@ -28,6 +28,7 @@ except ImportError:
 from Plugins.Extensions.IPAudio.Console2 import Console2
 import os
 import json
+from datetime import datetime
 from .skin import *
 from sys import version_info
 from collections import OrderedDict
@@ -55,6 +56,7 @@ config.plugins.IPAudio.mainmenu = ConfigYesNo(default=False)
 config.plugins.IPAudio.keepaudio = ConfigYesNo(default=False)
 config.plugins.IPAudio.volLevel = ConfigSelectionNumber(default=1, stepwidth=1, min=1, max=10, wraparound=True)
 config.plugins.IPAudio.tsDelay = ConfigInteger(default=5, limits=[1, MAX_DELAY])
+config.plugins.IPAudio.delay = NoSave(ConfigInteger(default=5, limits=[1, MAX_DELAY]))
 config.plugins.IPAudio.playlist = ConfigSelection(choices=[("1", _("Press OK"))], default="1")
 config.plugins.IPAudio.running = ConfigYesNo(default=False)
 config.plugins.IPAudio.lastidx = ConfigText()
@@ -106,11 +108,6 @@ def getversioninfo():
 
 
 Ver = getversioninfo()
-
-
-def get_Lecteur():
-    Leteur = config.plugins.IPAudio.sync.value
-    return Leteur
 
 
 def isMutable():
@@ -202,7 +199,7 @@ class IPAudioScreen(Screen):
         self.plIndex = 0
         self['server'] = Label()
         self['sync'] = Label()
-        self['sync'].setText('Audio sink : {}   TS Delay: {}'.format(get_Lecteur(), config.plugins.IPAudio.tsDelay.value))
+        self['sync'].setText('TS Delay: {}'.format(config.plugins.IPAudio.tsDelay.value))
         self["list"] = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         if isHD():
             self["list"].l.setItemHeight(50)
@@ -221,7 +218,7 @@ class IPAudioScreen(Screen):
             "right": self.right,
             "left": self.left,
             "pause": self.pause,
-            "pauseAudio": self.pauseAudio,
+            "pauseAudio": self.pauseAudioProcess,
             "delayUP": self.delayUP,
             "delayDown": self.delayDown,
         }, -1)
@@ -231,10 +228,13 @@ class IPAudioScreen(Screen):
         if HAVE_EALSA:
             self.alsa = eAlsaOutput.getInstance()
         self.timeShiftTimer = eTimer()
+        self.guideTimer = eTimer()
         try:
             self.timeShiftTimer.callback.append(self.unpauseService)
+            self.guideTimer.callback.append(self.getGuide)
         except:
             self.timeShiftTimer_conn = self.timeShiftTimer.timeout.connect(self.unpauseService)
+            self.guideTimer_conn = self.guideTimer.timeout.connect(self.getGuide)
         self.lastservice = self.session.nav.getCurrentlyPlayingServiceReference()
         if config.plugins.IPAudio.update.value:
             self.checkupdates()
@@ -245,7 +245,7 @@ class IPAudioScreen(Screen):
         service = self.session.nav.getCurrentService()
         return service and service.timeshift()
 
-    def pauseAudio(self):
+    def pauseAudioProcess(self):
         if config.plugins.IPAudio.running.value and IPAudioHandler.container.running():
             pid = IPAudioHandler.container.getPID()
             if not self.audioPaused:
@@ -257,28 +257,27 @@ class IPAudioScreen(Screen):
             eConsoleAppContainer().execute(cmd)
 
     def pause(self):
-        global delay
         if config.plugins.IPAudio.running.value:
             ts = self.getTimeshift()
             if ts is not None and not ts.isTimeshiftEnabled():
                 ts.startTimeshift()
                 ts.activateTimeshift()
                 self.timeShiftTimer.start(config.plugins.IPAudio.tsDelay.value * 1000)
-                delay = config.plugins.IPAudio.tsDelay.value
+                config.plugins.IPAudio.delay.value = config.plugins.IPAudio.tsDelay.value
             elif ts is not None and ts.isTimeshiftEnabled() and not self.timeShiftTimer.isActive():
-                if delay <= config.plugins.IPAudio.tsDelay.value:
+                if config.plugins.IPAudio.delay.value <= config.plugins.IPAudio.tsDelay.value:
                     service = self.session.nav.getCurrentService()
                     pauseable = service.pause()
                     if pauseable:
                         pauseable.pause()
-                        self.timeShiftTimer.start(((config.plugins.IPAudio.tsDelay.value) - delay) * 1000)
-                    delay = config.plugins.IPAudio.tsDelay.value
-                if delay > config.plugins.IPAudio.tsDelay.value:
+                        self.timeShiftTimer.start(((config.plugins.IPAudio.tsDelay.value) - config.plugins.IPAudio.delay.value) * 1000)
+                    config.plugins.IPAudio.delay.value = config.plugins.IPAudio.tsDelay.value
+                if config.plugins.IPAudio.delay.value > config.plugins.IPAudio.tsDelay.value:
                     ts.stopTimeshift()
                     ts.startTimeshift()
                     ts.activateTimeshift()
                     self.timeShiftTimer.start(((config.plugins.IPAudio.tsDelay.value)) * 1000)
-                    delay = config.plugins.IPAudio.tsDelay.value
+                    config.plugins.IPAudio.delay.value = config.plugins.IPAudio.tsDelay.value
 
     def unpauseService(self):
         self.timeShiftTimer.stop()
@@ -291,13 +290,13 @@ class IPAudioScreen(Screen):
         if config.plugins.IPAudio.tsDelay.value < MAX_DELAY:
             config.plugins.IPAudio.tsDelay.value += 1
             config.plugins.IPAudio.tsDelay.save()
-            self['sync'].setText('Audio sink : {}   TS Delay: {}'.format(get_Lecteur(), config.plugins.IPAudio.tsDelay.value))
+            self['sync'].setText('TS Delay: {}'.format(config.plugins.IPAudio.tsDelay.value))
 
     def delayDown(self):
         if config.plugins.IPAudio.tsDelay.value > 1:
             config.plugins.IPAudio.tsDelay.value -= 1
             config.plugins.IPAudio.tsDelay.save()
-            self['sync'].setText('Audio sink : {}   TS Delay: {}'.format(get_Lecteur(), config.plugins.IPAudio.tsDelay.value))
+            self['sync'].setText('TS Delay: {}'.format(config.plugins.IPAudio.tsDelay.value))
 
     def getHosts(self):
         hosts = resolveFilename(SCOPE_PLUGINS, "Extensions/IPAudio/hosts.json")
@@ -310,6 +309,7 @@ class IPAudioScreen(Screen):
 
     def onWindowShow(self):
         self.onShown.remove(self.onWindowShow)
+        self.guideTimer.start(30000)
         if config.plugins.IPAudio.lastidx.value:
             last_playlist, last_channel = map(int, config.plugins.IPAudio.lastidx.value.split(','))
             self.plIndex = last_playlist
@@ -421,7 +421,11 @@ class IPAudioScreen(Screen):
     def checkINGuide(self, entries):
         for idx, entry in enumerate(entries):
             if entry[0] in self.guide:
-                entries[idx] = (self.guide[entry[0]]['prog'], entry[1])
+                if self.guide[entry[0]]['check']:
+                    nowIntimestamp = datetime.now().strftime('%s')
+                    entryProgEnding = self.guide[entry[0]]['end']
+                    if int(entryProgEnding) >= int(nowIntimestamp):
+                        entries[idx] = (self.guide[entry[0]]['prog'], entry[1])
         return entries
 
     def getGuide(self):
@@ -453,9 +457,14 @@ class IPAudioScreen(Screen):
 
     def ok(self, long=False):
         if fileExists('/usr/bin/{}'.format(config.plugins.IPAudio.player.value)):
+            currentAudioTrack = 0
             if long:
-                self.url = 'http://127.0.0.1:8001/{}'.format(self.lastservice.toString())
-                config.plugins.IPAudio.lastplayed.value = "e2_service"
+                service = self.session.nav.getCurrentService()
+                if not service.streamed():
+                    currentAudioTrack = service.audioTracks().getCurrentTrack()
+                    currentAudioTrack += 2 #skip video stream index in the player
+                    self.url = 'http://127.0.0.1:8001/{}'.format(self.lastservice.toString())
+                    config.plugins.IPAudio.lastplayed.value = "e2_service"
             else:
                 index = self['list'].getSelectionIndex()
                 self.url = self.radioList[index][1]
@@ -468,6 +477,8 @@ class IPAudioScreen(Screen):
                     cmd += ' {}'.format(config.plugins.IPAudio.volLevel.value)
             else:
                 cmd = 'ff-ipaudio "{}"'.format(self.url)
+                if currentAudioTrack > 0:
+                    cmd = 'ff-ipaudio "{}" {}'.format(self.url, currentAudioTrack)
             self.runCmd(cmd)
         else:
             self.session.open(MessageBox, _("Cannot play url, {} is missing !!".format(config.plugins.IPAudio.player.value)), MessageBox.TYPE_ERROR, timeout=5)
@@ -513,6 +524,7 @@ class IPAudioScreen(Screen):
 
     def exit(self, ret=False):
         if ret and not self.timeShiftTimer.isActive():
+            self.guideTimer.stop()
             self.close()
 
 
