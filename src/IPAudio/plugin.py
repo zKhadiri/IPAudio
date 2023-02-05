@@ -462,7 +462,6 @@ class IPAudioScreen(Screen):
                 service = self.session.nav.getCurrentService()
                 if not service.streamed():
                     currentAudioTrack = service.audioTracks().getCurrentTrack()
-                    currentAudioTrack += 2 #skip video stream index in the player
                     self.url = 'http://127.0.0.1:8001/{}'.format(self.lastservice.toString())
                     config.plugins.IPAudio.lastplayed.value = "e2_service"
             else:
@@ -484,8 +483,12 @@ class IPAudioScreen(Screen):
             self.session.open(MessageBox, _("Cannot play url, {} is missing !!".format(config.plugins.IPAudio.player.value)), MessageBox.TYPE_ERROR, timeout=5)
 
     def audioReStart(self):
-        if fileExists('/dev/dvb/adapter0/audio10') and config.plugins.IPAudio.running.value and not isMutable():
+        if fileExists('/dev/dvb/adapter0/audio10') and not isMutable():
             self.session.nav.stopService()
+            try:
+                os.rename('/dev/dvb/adapter0/audio10', '/dev/dvb/adapter0/audio0')
+            except:
+                pass
             self.session.nav.playService(self.lastservice)
         elif config.plugins.IPAudio.running.value and isMutable():
             cmd = '{} Unmute'.format(config.plugins.IPAudio.player.value)
